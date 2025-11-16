@@ -1,0 +1,10 @@
+package com.example.demo.exceptionhandler;
+
+public class DuplicateDoctorException extends RuntimeException{
+
+    public DuplicateDoctorException(String message) {
+        super(message);
+    }
+
+
+}
