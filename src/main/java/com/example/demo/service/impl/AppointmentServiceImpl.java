@@ -101,7 +101,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         }
 
-
         if (dto.getAppointmentDateTime().isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("Appointment must be in the future");
         }

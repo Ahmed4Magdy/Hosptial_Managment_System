@@ -183,14 +183,15 @@ public class AppointmentServiceTest {
         appointment = new Appointment();
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
+        appointment.setStatus(Appointment.Status.SCHEDULED);
         appointment.setAppointmentDateTime(LocalDateTime.of(2026, 12, 27, 22, 30));
 
 
         when(appointmentRepository.findById(1L)).thenReturn(Optional.of(appointment));
-        Appointment saved = new Appointment();
-        saved.setStatus(Appointment.Status.CANCELED);
-        when(appointmentRepository.save(appointment)).thenReturn(saved);
-        when(appointmentMapper.toDto(saved)).thenReturn(dto);
+//        Appointment saved = new Appointment();
+        appointment.setStatus(Appointment.Status.CANCELED);
+        when(appointmentRepository.save(appointment)).thenReturn(appointment);
+        when(appointmentMapper.toDto(appointment)).thenReturn(dto);
         AppointmentDto result = appointmentServiceimpl.cancelAppointment(1L);
 
     }
