@@ -48,7 +48,7 @@ public class GlobalException {
 
 
     @ExceptionHandler(DoctorNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handlePatientNotFound(DoctorNotFoundException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponse> handleDoctorNotFound(DoctorNotFoundException ex, WebRequest request) {
         ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
@@ -61,7 +61,7 @@ public class GlobalException {
 
 
     @ExceptionHandler(DuplicateDoctorException.class)
-    public ResponseEntity<ErrorResponse> handlePatientNotFound(DuplicateDoctorException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponse> handleDuplicateDoctorException(DuplicateDoctorException ex, WebRequest request) {
         ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.CONFLICT.value(),
@@ -75,7 +75,7 @@ public class GlobalException {
 
 
     @ExceptionHandler(DoctorNotAvaliableException.class)
-    public ResponseEntity<ErrorResponse> handlePatientNotFound(DoctorNotAvaliableException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponse> handleDoctorNotAvaliableException(DoctorNotAvaliableException ex, WebRequest request) {
         ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
@@ -88,7 +88,7 @@ public class GlobalException {
 
 
     @ExceptionHandler(PatientNotAvaliableException.class)
-    public ResponseEntity<ErrorResponse> handlePatientNotFound(PatientNotAvaliableException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponse> handlePatientNotAvaliableException(PatientNotAvaliableException ex, WebRequest request) {
         ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
@@ -100,7 +100,7 @@ public class GlobalException {
 
 
     @ExceptionHandler(AppointmentNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handlePatientNotFound(AppointmentNotFoundException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponse> handleAppointmentNotFoundException(AppointmentNotFoundException ex, WebRequest request) {
         ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
@@ -112,7 +112,7 @@ public class GlobalException {
 
 
     @ExceptionHandler(CannotCancelPastAppointmentException.class)
-    public ResponseEntity<ErrorResponse> handlePatientNotFound(CannotCancelPastAppointmentException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponse> handleCannotCancelPastAppointmentException(CannotCancelPastAppointmentException ex, WebRequest request) {
         ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
@@ -123,7 +123,7 @@ public class GlobalException {
     }
 
     @ExceptionHandler(CannotcompleteaappointmentbeforefinishedException.class)
-    public ResponseEntity<ErrorResponse> handlePatientNotFound(CannotcompleteaappointmentbeforefinishedException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponse> handleCannotcompleteaappointmentbeforefinishedException(CannotcompleteaappointmentbeforefinishedException ex, WebRequest request) {
         ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
@@ -133,6 +133,18 @@ public class GlobalException {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+
+
+    @ExceptionHandler(PrescriptionNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlePrescriptionNotFound(PrescriptionNotFoundException ex, WebRequest request) {
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 
 
 }

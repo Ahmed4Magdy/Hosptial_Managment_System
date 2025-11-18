@@ -1,11 +1,7 @@
 package com.example.demo.dto;
 
 import com.example.demo.entity.Appointment;
-import com.example.demo.entity.Doctor;
-import com.example.demo.entity.Patient;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,5 +22,6 @@ public class AppointmentDto {
     private Appointment.Status status = Appointment.Status.SCHEDULED;
     //    @NotBlank(message = "should notes not blank")
     private String notes;
+
 
 }

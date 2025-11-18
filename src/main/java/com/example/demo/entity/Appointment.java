@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.print.Doc;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,8 +41,10 @@ public class Appointment {
         COMPLETED
     }
 
-//    @NotBlank(message = "should notes not blank")
+    //    @NotBlank(message = "should notes not blank")
     private String notes;
 
+    @OneToMany(mappedBy = "appointment")
+    private List<Prescription> prescription;
 
 }
