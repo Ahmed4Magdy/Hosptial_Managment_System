@@ -1,6 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.AppointmentDto;
+import com.example.demo.entity.Appointment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,6 +29,9 @@ public interface AppointmentService {
     public void deleteAppointmentById(Long id);
 
     public AppointmentDto update (Long id,AppointmentDto dto);
+
+    public Page<Appointment> findAll(Pageable pageable);
+
 
 }
 

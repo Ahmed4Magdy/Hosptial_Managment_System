@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.dto.AppointmentDto;
 import com.example.demo.entity.Appointment;
+import com.example.demo.entity.Prescription;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -32,5 +33,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
 
     List<Appointment> findByPatientIdAndAppointmentDateTimeBetween(Long patientId, LocalDateTime start, LocalDateTime end);
+
+
+    List<Appointment> findByPatientId(Long patientId);
 
 }

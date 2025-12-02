@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
@@ -23,10 +24,12 @@ public class Appointment {
     @ManyToOne
     @NotNull
     @JoinColumn(name = "patient_id")
+    @JsonIgnore
     private Patient patient;
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     @NotNull
+    @JsonIgnore
     private Doctor doctor;
     @NotNull
     private LocalDateTime appointmentDateTime;
@@ -45,6 +48,7 @@ public class Appointment {
     private String notes;
 
     @OneToMany(mappedBy = "appointment")
+    @JsonIgnore
     private List<Prescription> prescription;
 
 }

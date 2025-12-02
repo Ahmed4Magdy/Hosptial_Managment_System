@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 public class AppointmentDto {
 
+    private Long id;
     @NotNull
     private Long patientId;
     @NotNull

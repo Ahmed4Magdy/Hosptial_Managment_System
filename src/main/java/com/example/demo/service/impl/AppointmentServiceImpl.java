@@ -10,6 +10,8 @@ import com.example.demo.repository.AppointmentRepository;
 import com.example.demo.repository.DoctorRepository;
 import com.example.demo.repository.PatientRepository;
 import com.example.demo.service.AppointmentService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -206,6 +208,10 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         return appointmentRepository.findAll().stream().map(appointmentMapper::toDto).collect(Collectors.toList());
 
+    }
+
+    public Page<Appointment> findAll(Pageable pageable){
+        return appointmentRepository.findAll(pageable);
     }
 
 
