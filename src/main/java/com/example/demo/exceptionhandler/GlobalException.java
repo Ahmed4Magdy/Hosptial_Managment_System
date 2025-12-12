@@ -1,6 +1,5 @@
 package com.example.demo.exceptionhandler;
 
-import com.example.demo.entity.Appointment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -146,5 +145,28 @@ public class GlobalException {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+
+    @ExceptionHandler(InvoiceItemNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlePrescriptionNotFound(InvoiceItemNotFoundException ex, WebRequest request) {
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(InvoiceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlePrescriptionNotFound(InvoiceNotFoundException ex, WebRequest request) {
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 
 }

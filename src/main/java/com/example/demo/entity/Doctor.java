@@ -1,5 +1,5 @@
 package com.example.demo.entity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -20,14 +20,18 @@ public class Doctor {
     @NotBlank(message = "should fullname not blank")
     @Column(name = "full_name", nullable = false)
     private String fullName;
+
     @NotBlank(message = "should specialization not blank")
     @Column(name = "specialization", nullable = false)
     private String specialization;
+
     @Column(unique = true, nullable = false)
     private String email;
+
     @NotBlank(message = "should phoneNumber not blank")
     @Column(name = "phone_number",nullable = false)
     private String phoneNumber;
+
     @Column(name = "created_at",nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 

@@ -55,6 +55,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         prescription.setDoctor(existing2);
         prescription.setPatient(existing3);
         prescription.setCreated_at(LocalDateTime.now());
+        prescription.setUpdated_at(null);
         Prescription saved = prescriptionRepository.save(prescription);
 
         return prescriptionMapper.toDto(saved);
