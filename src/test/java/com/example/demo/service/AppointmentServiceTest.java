@@ -214,7 +214,7 @@ public class AppointmentServiceTest {
         dto = new AppointmentDto();
         dto.setPatientId(1L);
         dto.setDoctorId(1L);
-        appointment.setAppointmentDateTime(LocalDateTime.of(2026, 12, 27, 22, 30));
+        dto.setAppointmentDateTime(LocalDateTime.of(2026, 12, 27, 22, 30));
 
 
 
