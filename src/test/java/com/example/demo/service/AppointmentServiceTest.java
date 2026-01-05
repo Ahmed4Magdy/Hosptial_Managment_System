@@ -61,10 +61,6 @@ public class AppointmentServiceTest {
         patient.setId(1L);
 
 
-        dto = new AppointmentDto();
-        dto.setPatientId(1L);
-        dto.setDoctorId(1L);
-        dto.setAppointmentDateTime(LocalDateTime.of(2025, 12, 20, 20, 30));
 
     }
 
@@ -75,6 +71,13 @@ public class AppointmentServiceTest {
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
         appointment.setAppointmentDateTime(LocalDateTime.of(2025, 11, 20, 22, 30));
+
+
+        dto = new AppointmentDto();
+        dto.setPatientId(1L);
+        dto.setDoctorId(1L);
+        dto.setAppointmentDateTime(LocalDateTime.of(2025, 11, 20, 22, 30));
+
 
 
         when(appointmentRepository.existsByDoctorIdAndAppointmentDateTimeAndStatusIn(1L, dto.getAppointmentDateTime(), List.of(Appointment.Status.SCHEDULED, Appointment.Status.COMPLETED))).thenReturn(true);
@@ -95,6 +98,11 @@ public class AppointmentServiceTest {
         appointment.setPatient(patient);
         appointment.setAppointmentDateTime(LocalDateTime.of(2025, 11, 20, 22, 30));
 
+        dto = new AppointmentDto();
+        dto.setPatientId(1L);
+        dto.setDoctorId(1L);
+        dto.setAppointmentDateTime(LocalDateTime.of(2025, 11, 20, 22, 30));
+
 
         when(appointmentRepository.existsByPatientIdAndAppointmentDateTimeAndStatusIn(1L, dto.getAppointmentDateTime(), List.of(Appointment.Status.SCHEDULED, Appointment.Status.COMPLETED))).thenReturn(true);
 
@@ -110,10 +118,17 @@ public class AppointmentServiceTest {
     @Test
     void createAppointment_ShouldSaveSuccessfully() {
 
+        dto = new AppointmentDto();
+        dto.setPatientId(1L);
+        dto.setDoctorId(1L);
+        dto.setAppointmentDateTime(LocalDateTime.of(2026, 11, 20, 22, 30));
+
+
         appointment = new Appointment();
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
-        appointment.setAppointmentDateTime(LocalDateTime.of(2025, 11, 20, 22, 30));
+        appointment.setAppointmentDateTime(LocalDateTime.of(2026, 11, 20, 22, 30));
+
 
 
         when(appointmentRepository.existsByDoctorIdAndAppointmentDateTimeAndStatusIn(1L, dto.getAppointmentDateTime(), List.of(Appointment.Status.SCHEDULED, Appointment.Status.COMPLETED))).thenReturn(false);
@@ -144,6 +159,11 @@ public class AppointmentServiceTest {
         appointment.setPatient(patient);
         appointment.setAppointmentDateTime(LocalDateTime.of(2025, 11, 20, 22, 30));
 
+        dto = new AppointmentDto();
+        dto.setPatientId(1L);
+        dto.setDoctorId(1L);
+        dto.setAppointmentDateTime(LocalDateTime.of(2025, 11, 20, 22, 30));
+
 
         when(appointmentRepository.findById(2L)).thenReturn(Optional.empty());
 
@@ -161,6 +181,11 @@ public class AppointmentServiceTest {
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
         appointment.setAppointmentDateTime(LocalDateTime.of(2025, 11, 20, 22, 30));
+
+        dto = new AppointmentDto();
+        dto.setPatientId(1L);
+        dto.setDoctorId(1L);
+        dto.setAppointmentDateTime(LocalDateTime.of(2025, 11, 20, 22, 30));
 
 
         when(appointmentRepository.findById(1L)).thenReturn(Optional.of(appointment));
@@ -186,13 +211,18 @@ public class AppointmentServiceTest {
         appointment.setStatus(Appointment.Status.SCHEDULED);
         appointment.setAppointmentDateTime(LocalDateTime.of(2026, 12, 27, 22, 30));
 
+        dto = new AppointmentDto();
+        dto.setPatientId(1L);
+        dto.setDoctorId(1L);
+        appointment.setAppointmentDateTime(LocalDateTime.of(2026, 12, 27, 22, 30));
+
+
 
         when(appointmentRepository.findById(1L)).thenReturn(Optional.of(appointment));
-//        Appointment saved = new Appointment();
-        appointment.setStatus(Appointment.Status.CANCELED);
         when(appointmentRepository.save(appointment)).thenReturn(appointment);
         when(appointmentMapper.toDto(appointment)).thenReturn(dto);
         AppointmentDto result = appointmentServiceimpl.cancelAppointment(1L);
+
 
     }
 
@@ -205,6 +235,12 @@ public class AppointmentServiceTest {
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
         appointment.setAppointmentDateTime(LocalDateTime.of(2025, 11, 15, 22, 30));
+
+
+        dto = new AppointmentDto();
+        dto.setPatientId(1L);
+        dto.setDoctorId(1L);
+        dto.setAppointmentDateTime(LocalDateTime.of(2025, 11, 25, 22, 30));
 
 
         when(appointmentRepository.findById(1L)).thenReturn(Optional.of(appointment));
@@ -229,11 +265,16 @@ public class AppointmentServiceTest {
         appointment.setPatient(patient);
         appointment.setAppointmentDateTime(LocalDateTime.of(2025, 11, 15, 22, 30));
 
+        dto = new AppointmentDto();
+        dto.setPatientId(1L);
+        dto.setDoctorId(1L);
+        dto.setAppointmentDateTime(LocalDateTime.of(2025, 11, 15, 22, 30));
+
 
         when(appointmentRepository.findById(1L)).thenReturn(Optional.of(appointment));
 
         Appointment saved = new Appointment();
-        saved.setStatus(Appointment.Status.COMPLETED);
+//        saved.setStatus(Appointment.Status.COMPLETED);
         when(appointmentRepository.saveAndFlush(appointment)).thenReturn(saved);
         when(appointmentMapper.toDto(saved)).thenReturn(dto);
         AppointmentDto result = appointmentServiceimpl.compeleteAppointment(1L);
@@ -249,6 +290,11 @@ public class AppointmentServiceTest {
         appointment.setPatient(patient);
         appointment.setAppointmentDateTime(LocalDateTime.of(2026, 12, 27, 22, 30));
 
+        dto = new AppointmentDto();
+        dto.setPatientId(1L);
+        dto.setDoctorId(1L);
+        dto.setAppointmentDateTime(LocalDateTime.of(2026, 12, 27, 22, 30));
+
 
         when(appointmentRepository.findById(1L)).thenReturn(Optional.of(appointment));
 
@@ -263,6 +309,12 @@ public class AppointmentServiceTest {
 
     @Test
     void test_Should_getDoctorId_And_Appointment() {
+
+        dto = new AppointmentDto();
+        dto.setPatientId(1L);
+        dto.setDoctorId(1L);
+        dto.setAppointmentDateTime(LocalDateTime.of(2025, 11, 20, 22, 30));
+
 
         appointment = new Appointment();
         appointment.setDoctor(doctor);
@@ -284,6 +336,13 @@ public class AppointmentServiceTest {
 
     @Test
     void test_Should_getPatientId_And_Appointment() {
+
+        dto = new AppointmentDto();
+        dto.setPatientId(1L);
+        dto.setDoctorId(1L);
+        dto.setAppointmentDateTime(LocalDateTime.of(2025, 11, 20, 22, 30));
+
+
 
         appointment = new Appointment();
         appointment.setDoctor(doctor);
@@ -307,6 +366,12 @@ public class AppointmentServiceTest {
     @Test
     void test_getAppointmentById() {
 
+        dto = new AppointmentDto();
+        dto.setPatientId(1L);
+        dto.setDoctorId(1L);
+        dto.setAppointmentDateTime(LocalDateTime.of(2025, 11, 20, 22, 30));
+
+
         appointment = new Appointment();
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
@@ -329,6 +394,12 @@ public class AppointmentServiceTest {
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
         appointment.setAppointmentDateTime(LocalDateTime.of(2025, 11, 20, 22, 30));
+
+        dto = new AppointmentDto();
+        dto.setPatientId(1L);
+        dto.setDoctorId(1L);
+        dto.setAppointmentDateTime(LocalDateTime.of(2025, 11, 20, 22, 30));
+
 
         when(appointmentRepository.findAll()).thenReturn(List.of(appointment));
         when(appointmentMapper.toDto(appointment)).thenReturn(dto);
