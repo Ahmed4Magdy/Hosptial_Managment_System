@@ -57,5 +57,9 @@ public class Invoice {
     @Column(name = "updated_at")
     private LocalDateTime updated_at = LocalDateTime.now();
 
+    @OneToOne(mappedBy = "invoice")
+    private Payment payment;
+
+
 
 }

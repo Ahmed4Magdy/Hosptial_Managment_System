@@ -15,6 +15,8 @@ import com.example.demo.repository.DoctorRepository;
 import com.example.demo.repository.PatientRepository;
 import com.example.demo.repository.PrescriptionRepository;
 import com.example.demo.service.PrescriptionService;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,20 +24,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PrescriptionServiceImpl implements PrescriptionService {
+
     private final PrescriptionRepository prescriptionRepository;
     private final AppointmentRepository appointmentRepository;
     private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
     private final PrescriptionMapper prescriptionMapper;
 
-    public PrescriptionServiceImpl(PrescriptionRepository prescriptionRepository, AppointmentRepository appointmentRepository, DoctorRepository doctorRepository, PatientRepository patientRepository, PrescriptionMapper prescriptionMapper) {
-        this.prescriptionRepository = prescriptionRepository;
-        this.appointmentRepository = appointmentRepository;
-        this.doctorRepository = doctorRepository;
-        this.patientRepository = patientRepository;
-        this.prescriptionMapper = prescriptionMapper;
-    }
+
 
     @Override
     public PrescriptionDto createPrescription(PrescriptionDto dto) {

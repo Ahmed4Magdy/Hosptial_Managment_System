@@ -32,7 +32,10 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     public InvoiceItemDto createInvoiceItem(InvoiceItemDto dto) {
 
         InvoiceItem existing = invoiceItemMapper.toEntity(dto);
-        existing.setTotal(dto.getPrice() * dto.getQuantity());
+
+        BigDecimal invoiceTotal = dto.getPrice().multiply(BigDecimal.valueOf(dto.getQuantity()));
+
+        existing.setTotal(invoiceTotal);
         invoiceItemRepository.save(existing);
         return invoiceItemMapper.toDto(existing);
 
@@ -40,26 +43,29 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
 
 
     @Override
-    public InvoiceItemDto updateInvoiceItems(Long invoiceitemId, Long invoice, InvoiceItemDto dto) {
+    public InvoiceItemDto updateInvoiceItems(Long invoiceitemId, Long invoiceId, InvoiceItemDto dto) {
 
         InvoiceItem item = invoiceItemRepository.findById(invoiceitemId).orElseThrow(() -> new InvoiceItemNotFoundException("InvoiceItem Not Found"));
-        Invoice existing2 = invoiceRepository.findById(invoice).orElseThrow(() -> new InvoiceNotFoundException("Invoice Not Found"));
+        Invoice invoice = invoiceRepository.findById(invoiceId).orElseThrow(() -> new InvoiceNotFoundException("Invoice Not Found"));
 
         invoiceItemMapper.updateInvoiceItemFromDto(dto, item);
 
 
-        item.setTotal(item.getPrice() * item.getQuantity());
+        BigDecimal itemTotal = item.getPrice()
+                .multiply(BigDecimal.valueOf(item.getQuantity()));
 
-        Invoice invoice1 = item.getInvoice();
+        item.setTotal(itemTotal);
 
-        double total = 0.0;
-        for (InvoiceItem i : invoice1.getItems()) {
-            total = total + i.getTotal();
+        BigDecimal total = BigDecimal.ZERO;
+        for (InvoiceItem i : invoice.getItems()) {
+            total = total.add(i.getTotal());
         }
 
-        invoice1.setTotalAmount(BigDecimal.valueOf(total));
+//        BigDecimal total = invoice.getItems().stream().map(InvoiceItem::getTotal).reduce(BigDecimal.ZERO,BigDecimal::add);
 
-        Invoice saved = invoiceRepository.save(invoice1);
+        invoice.setTotalAmount(total);
+
+        invoiceRepository.save(invoice);
 
         return invoiceItemMapper.toDto(item);
 

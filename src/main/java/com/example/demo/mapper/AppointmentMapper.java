@@ -10,7 +10,6 @@ import org.mapstruct.MappingTarget;
 public interface AppointmentMapper {
 
 
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "patient", ignore = true)
     @Mapping(target = "doctor", ignore = true)
     @Mapping(target = "appointmentDateTime", ignore = true)
@@ -23,7 +22,6 @@ public interface AppointmentMapper {
     AppointmentDto toDto(Appointment appointment);
 
 
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "patient", ignore = true)
     @Mapping(target = "doctor", ignore = true)
     @Mapping(target = "appointmentDateTime", ignore = true)

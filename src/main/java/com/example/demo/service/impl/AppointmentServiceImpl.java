@@ -10,6 +10,7 @@ import com.example.demo.repository.AppointmentRepository;
 import com.example.demo.repository.DoctorRepository;
 import com.example.demo.repository.PatientRepository;
 import com.example.demo.service.AppointmentService;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
@@ -30,63 +33,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final PatientRepository patientRepository;
 
 
-    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, AppointmentMapper appointmentMapper, DoctorRepository doctorRepository, PatientRepository patientRepository) {
-        this.appointmentRepository = appointmentRepository;
-        this.appointmentMapper = appointmentMapper;
-        this.doctorRepository = doctorRepository;
-        this.patientRepository = patientRepository;
-    }
-
-
-//    @Transactional
-//    public AppointmentDto createAppointment(AppointmentDto dto) {
-//
-//
-//        // الحالات التي تعتبر تعارضاً
-//        List<Appointment.Status> conflictingStatuses = List.of(
-//                Appointment.Status.SCHEDULED,
-//                Appointment.Status.COMPLETED
-//        );
-//
-//        // تحقق من وجود تعارض سواء للدكتور أو للمريض في نفس الوقت
-//        boolean conflictExists = appointmentRepository.existsByDoctorIdOrPatientIdAndAppointmentDateTimeAndStatusIn(
-//                dto.getDoctorId(),
-//                dto.getPatientId(),
-//                dto.getAppointmentDateTime(),
-//                conflictingStatuses
-//        );
-//
-//        if (conflictExists) {
-//            throw new RuntimeException("Doctor or patient is not available at this time.");
-//        }
-//
-//        // أولاً: تأكد إن المعاد في المستقبل
-//        if (dto.getAppointmentDateTime().isBefore(LocalDateTime.now())) {
-//            throw new IllegalArgumentException("Appointment must be in the future");
-//        }
-//
-//        // جلب كائنات الدكتور والمريض من قاعدة البيانات
-//        Doctor doctor = doctorRepository.findById(dto.getDoctorId())
-//                .orElseThrow(() -> new RuntimeException("Not Found doctor with ID " + dto.getDoctorId()));
-//        Patient patient = patientRepository.findById(dto.getPatientId())
-//                .orElseThrow(() -> new RuntimeException("Not Found patient with ID " + dto.getPatientId()));
-//
-//        // إنشاء وحفظ الموعد
-//        Appointment appointment = appointmentMapper.toEntity(dto);
-//        appointment.setDoctor(doctor);
-//        appointment.setPatient(patient);
-//        appointment.setAppointmentDateTime(dto.getAppointmentDateTime());
-//
-//        Appointment saved = appointmentRepository.save(appointment);
-//        return appointmentMapper.toDto(saved);
-//    }
-
-
     @Override
     @Transactional
     public AppointmentDto createAppointment(AppointmentDto dto) {
 
-        List<Appointment.Status> conflictingStatuses = List.of(
+        List<Appointment.Status> conflictingStatuses = Arrays.asList(
                 Appointment.Status.SCHEDULED,
                 Appointment.Status.COMPLETED
         );
@@ -107,8 +58,8 @@ public class AppointmentServiceImpl implements AppointmentService {
             throw new IllegalArgumentException("Appointment must be in the future");
         }
         Appointment appointment = appointmentMapper.toEntity(dto);
-        Doctor doctor = doctorRepository.findById(dto.getDoctorId()).orElseThrow(() -> new RuntimeException("Not Found doctor with " + dto.getDoctorId()));
-        Patient patient = patientRepository.findById(dto.getPatientId()).orElseThrow(() -> new RuntimeException("Not Found Patient with " + dto.getPatientId()));
+        Doctor doctor = doctorRepository.findById(dto.getDoctorId()).orElseThrow(() -> new DoctorNotFoundException("Not Found doctor with " + dto.getDoctorId()));
+        Patient patient = patientRepository.findById(dto.getPatientId()).orElseThrow(() -> new PatientNotFoundException("Not Found Patient with " + dto.getPatientId()));
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
         appointment.setAppointmentDateTime(dto.getAppointmentDateTime());
@@ -210,7 +161,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     }
 
-    public Page<Appointment> findAll(Pageable pageable){
+    public Page<Appointment> findAll(Pageable pageable) {
         return appointmentRepository.findAll(pageable);
     }
 

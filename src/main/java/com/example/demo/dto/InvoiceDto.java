@@ -42,5 +42,36 @@ public class InvoiceDto {
 
     List<InvoiceItemDto> items = new ArrayList<>();
 
+    public Long getId() {
+        return id;
+    }
+
+    public Long getDoctorId() {
+        return doctorId;
+    }
+
+    public @NotBlank(message = "should doctorname not blank") String getDoctorName() {
+        return doctorName;
+    }
+
+    public Long getPatientId() {
+        return patientId;
+    }
+
+    public @NotBlank(message = "should patientName not blank") String getPatientName() {
+        return patientName;
+    }
+
+    public Long getAppointmentId() {
+        return appointmentId;
+    }
+
+    public Invoice.Status getStatus() {
+        return status;
+    }
+
+    public List<InvoiceItemDto> getItems() {
+        return items;
+    }
 
 }

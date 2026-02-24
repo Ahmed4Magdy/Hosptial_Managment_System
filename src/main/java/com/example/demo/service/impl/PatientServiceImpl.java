@@ -7,6 +7,7 @@ import com.example.demo.exceptionhandler.PatientNotFoundException;
 import com.example.demo.mapper.PatientMapper;
 import com.example.demo.repository.PatientRepository;
 import com.example.demo.service.PatientService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,18 +15,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class PatientServiceImpl implements PatientService {
 
 
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
 
-    public PatientServiceImpl(PatientRepository patientRepository, PatientMapper patientMapper) {
-        this.patientRepository = patientRepository;
-        this.patientMapper = patientMapper;
-    }
 
 
+    @Override
     public PatientDto createpatient(PatientDto dto) {
 
         if (patientRepository.existsByEmail(dto.getEmail())) {
@@ -45,7 +44,7 @@ public class PatientServiceImpl implements PatientService {
         Patient exist = patientRepository.findById(id).orElseThrow(() -> new PatientNotFoundException("not found patient with " + id));
         patientMapper.updatepatienttodto(dto, exist);
         Patient saved = patientRepository.save(exist);
-        return patientMapper.toDto(exist);
+        return patientMapper.toDto(saved);
 
     }
 

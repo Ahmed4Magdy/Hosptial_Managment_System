@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 public class InvoiceItemDto {
@@ -20,7 +22,7 @@ public class InvoiceItemDto {
     @NotBlank(message = "should serviceName not blank")
     private String serviceName;
     @NotBlank(message = "should price not blank")
-    private double price;
+    private BigDecimal price;
     @NotBlank(message = "should quantity not blank")
     private int quantity;
     @NotBlank(message = "should total not blank")

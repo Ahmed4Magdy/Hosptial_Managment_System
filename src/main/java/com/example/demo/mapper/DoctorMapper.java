@@ -6,7 +6,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-import javax.print.Doc;
 
 @Mapper(componentModel = "spring")
 public interface DoctorMapper {

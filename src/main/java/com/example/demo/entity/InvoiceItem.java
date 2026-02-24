@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @Setter
@@ -16,9 +18,9 @@ public class InvoiceItem {
 
     @NotBlank(message = "should serviceName not blank")
     private String serviceName;
-    private double price;
+    private BigDecimal price;
     private int quantity=1;
-    private double total;
+    private BigDecimal total;
 
     @ManyToOne
     @JoinColumn(name = "invoice_id")

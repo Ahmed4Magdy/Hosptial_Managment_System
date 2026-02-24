@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -53,7 +54,7 @@ public class InvoiceItemControllerTest {
         invoiceItemDto = new InvoiceItemDto();
         invoiceItemDto.setId(1L);
         invoiceItemDto.setInvoiceId(1L);
-        invoiceItemDto.setPrice(200.00);
+        invoiceItemDto.setPrice(BigDecimal.valueOf(200));
         invoiceItemDto.setQuantity(4);
         invoiceItemDto.setServiceName("Blood Test");
 

@@ -7,25 +7,21 @@ import com.example.demo.exceptionhandler.DuplicateDoctorException;
 import com.example.demo.mapper.DoctorMapper;
 import com.example.demo.repository.DoctorRepository;
 import com.example.demo.service.DoctorService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.print.Doc;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class DoctorServiceImpl implements DoctorService {
 
 
     private final DoctorRepository doctorRepository;
     private final DoctorMapper doctorMapper;
 
-    public DoctorServiceImpl(DoctorRepository doctorRepository, DoctorMapper doctorMapper) {
-        this.doctorRepository = doctorRepository;
-        this.doctorMapper = doctorMapper;
-    }
 
     @Override
     public DoctorDto createdoctor(DoctorDto dto) {
@@ -58,7 +54,10 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public List<DoctorDto> findAllDoctor() {
 
-        return doctorRepository.findAll().stream().map(doctorMapper::toDto).collect(Collectors.toList());
+        return doctorRepository.findAll()
+                .stream()
+                .map(doctorMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -108,12 +108,34 @@ public class AppointmentServiceTest {
 
 
     @Test
+    void test_CreateAppointment_ShouldIllegalArgumentException() {
+
+        dto = new AppointmentDto();
+        dto.setPatientId(1L);
+        dto.setDoctorId(1L);
+//        dto.setAppointmentDateTime(LocalDateTime.of(2025, 12, 20, 20, 30));
+        dto.setAppointmentDateTime(LocalDateTime.now().minusDays(1));
+
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            appointmentServiceimpl.createAppointment(dto);
+        });
+
+
+        assertEquals("Appointment must be in the future", exception.getMessage());
+
+    }
+
+
+    @Test
     void createAppointment_ShouldSaveSuccessfully() {
 
         appointment = new Appointment();
         appointment.setDoctor(doctor);
         appointment.setPatient(patient);
-        appointment.setAppointmentDateTime(LocalDateTime.of(2025, 11, 20, 22, 30));
+        appointment.setAppointmentDateTime(LocalDateTime.of(2027, 11, 20, 22, 30));
+
+        dto.setAppointmentDateTime(LocalDateTime.of(2027, 12, 20, 20, 30));
 
 
         when(appointmentRepository.existsByDoctorIdAndAppointmentDateTimeAndStatusIn(1L, dto.getAppointmentDateTime(), List.of(Appointment.Status.SCHEDULED, Appointment.Status.COMPLETED))).thenReturn(false);
@@ -137,7 +159,7 @@ public class AppointmentServiceTest {
 
 
     @Test
-    void test_updateAppointment_ShouldThrow_WhenNotFound() {
+    void test_updateAppointment_ShouldThrowException_WhenNotFoundAppointment() {
 
         appointment = new Appointment();
         appointment.setDoctor(doctor);

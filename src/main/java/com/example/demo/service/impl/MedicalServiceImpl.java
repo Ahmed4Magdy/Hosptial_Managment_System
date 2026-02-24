@@ -12,11 +12,13 @@ import com.example.demo.repository.AppointmentRepository;
 import com.example.demo.repository.PatientRepository;
 import com.example.demo.repository.PrescriptionRepository;
 import com.example.demo.service.MedicalService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class MedicalServiceImpl implements MedicalService {
 
     private final PatientRepository patientRepository;
@@ -24,12 +26,6 @@ public class MedicalServiceImpl implements MedicalService {
     private final AppointmentRepository appointmentRepository;
     private final MedicalMapper medicalMapper;
 
-    public MedicalServiceImpl(PatientRepository patientRepository, PrescriptionRepository prescriptionRepository, AppointmentRepository appointmentRepository, MedicalMapper medicalMapper) {
-        this.patientRepository = patientRepository;
-        this.prescriptionRepository = prescriptionRepository;
-        this.appointmentRepository = appointmentRepository;
-        this.medicalMapper = medicalMapper;
-    }
 
     @Override
     public MedicalRecordDto getMedicalRecord(Long patientid) {

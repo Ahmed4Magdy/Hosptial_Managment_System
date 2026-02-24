@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -101,7 +102,7 @@ public class InvoiceServiceTest {
         invoiceItemDto = new InvoiceItemDto();
         invoiceItemDto.setId(1L);
         invoiceItemDto.setInvoiceId(1L);
-        invoiceItemDto.setPrice(200.00);
+        invoiceItemDto.setPrice(BigDecimal.valueOf(200));
         invoiceItemDto.setQuantity(4);
         invoiceItemDto.setServiceName("Blood Test");
 
@@ -109,7 +110,7 @@ public class InvoiceServiceTest {
         invoiceItem = new InvoiceItem();
         invoiceItem.setId(1L);
         invoiceItem.setInvoice(invoice);
-        invoiceItem.setPrice(200.00);
+        invoiceItem.setPrice(BigDecimal.valueOf(200));
         invoiceItem.setQuantity(4);
         invoiceItem.setServiceName("Blood Test");
 
@@ -117,7 +118,7 @@ public class InvoiceServiceTest {
         invoiceItemDto = new InvoiceItemDto();
         invoiceItemDto.setId(1L);
         invoiceItemDto.setInvoiceId(1L);
-        invoiceItemDto.setPrice(200.00);
+        invoiceItemDto.setPrice(BigDecimal.valueOf(200));
         invoiceItemDto.setQuantity(4);
         invoiceItemDto.setServiceName("Blood Test");
         invoiceItemDto.setTotal(800.00);

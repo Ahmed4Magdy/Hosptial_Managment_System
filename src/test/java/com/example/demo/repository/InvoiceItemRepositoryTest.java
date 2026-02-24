@@ -72,9 +72,9 @@ public class InvoiceItemRepositoryTest {
         InvoiceItem item1 = new InvoiceItem();
         item1.setInvoice(invoice);
         item1.setServiceName("Blood Test");
-        item1.setPrice(100);
+        item1.setPrice(BigDecimal.valueOf(100));
         item1.setQuantity(2);
-        item1.setTotal(200);
+        item1.setTotal(BigDecimal.valueOf(200));
         InvoiceItem saved = invoiceItemRepository.save(item1);
 
 
@@ -89,9 +89,9 @@ public class InvoiceItemRepositoryTest {
         InvoiceItem item = new InvoiceItem();
         item.setInvoice(invoice);
         item.setServiceName("Blood Test");
-        item.setPrice(100);
+        item.setPrice(BigDecimal.valueOf(100));
         item.setQuantity(1);
-        item.setTotal(100);
+        item.setTotal(BigDecimal.valueOf(100));
         InvoiceItem saved = invoiceItemRepository.save(item);
 
         invoiceItemRepository.deleteById(saved.getId());
@@ -108,9 +108,9 @@ public class InvoiceItemRepositoryTest {
         InvoiceItem item = new InvoiceItem();
         item.setInvoice(invoice);
         item.setServiceName("Blood Test");
-        item.setPrice(100);
+        item.setPrice(BigDecimal.valueOf(100));
         item.setQuantity(2);
-        item.setTotal(200);
+        item.setTotal(BigDecimal.valueOf(200));
         InvoiceItem savedItem = invoiceItemRepository.save(item);
 
         // Update quantity

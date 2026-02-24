@@ -3,6 +3,8 @@ package com.example.demo.service;
 import com.example.demo.dto.DoctorDto;
 import com.example.demo.dto.PatientDto;
 import com.example.demo.entity.Doctor;
+import com.example.demo.exceptionhandler.DoctorNotFoundException;
+import com.example.demo.exceptionhandler.DuplicateDoctorException;
 import com.example.demo.mapper.DoctorMapper;
 import com.example.demo.repository.DoctorRepository;
 import com.example.demo.service.impl.DoctorServiceImpl;
@@ -17,6 +19,7 @@ import javax.print.Doc;
 import java.util.Optional;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
@@ -53,8 +56,8 @@ public class DoctorServiceTest {
 
 
     @Test
-    public void test_create_Doctor() {
-
+    public void test_create_doctor_ShouldReturnDto() {
+        when(doctorRepository.existsByEmail(dto.getEmail())).thenReturn(false);
         when(doctorMapper.toEntity(dto)).thenReturn(doctor);
         when(doctorRepository.save(doctor)).thenReturn(doctor);
         when(doctorMapper.toDto(doctor)).thenReturn(dto);
@@ -62,11 +65,26 @@ public class DoctorServiceTest {
 
         DoctorDto result = doctorServiceimpl.createdoctor(dto);
         assertNotNull(result);
-
+        verify(doctorRepository, times(1)).existsByEmail(dto.getEmail());
+        verify(doctorRepository, times(1)).save(doctor);
     }
 
     @Test
-    void test_update_patient() {
+    public void test_create_doctor_ShouldThrowException() {
+        when(doctorRepository.existsByEmail(dto.getEmail())).thenReturn(true);
+
+        assertThrows(DuplicateDoctorException.class, () -> {
+            doctorServiceimpl.createdoctor(dto);
+        });
+
+        // this ensure that save method was never called on doctorRepository
+        // بيتاكد ان الميثود سيف ال في الريبو مدخلتش اطلاقا باي اوبجكت
+        verify(doctorRepository, never()).save(any());
+    }
+
+
+    @Test
+    void test_updateDoctor_ShouldReturnUpdateDoctorDto() {
         Long id = doctor.getId();
 
         when(doctorRepository.findById(id)).thenReturn(Optional.of(doctor));
@@ -76,12 +94,31 @@ public class DoctorServiceTest {
         DoctorDto result = doctorServiceimpl.update(id, dto);
 
         assertNotNull(result);
+        verify(doctorRepository, times(1)).save(any());
+        verify(doctorMapper,times(1)).updateDoctorFromDto(dto,doctor);
 
     }
 
 
     @Test
-    void test_get_patient_with_id() {
+    void test_updateDoctor_shouldThrowException_whenDoctorNotFoundException() {
+        Long id = doctor.getId();
+
+        when(doctorRepository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(DoctorNotFoundException.class, () -> {
+            doctorServiceimpl.update(id, dto);
+        });
+
+        verify(doctorRepository, never()).save(any());
+        verify(doctorMapper, never()).updateDoctorFromDto(any(), any());
+
+    }
+
+
+
+
+    @Test
+    void test_getDoctorById_shouldReturnDoctor() {
         Long id = doctor.getId();
 
         when(doctorRepository.findById(id)).thenReturn(Optional.of(doctor));
@@ -92,9 +129,21 @@ public class DoctorServiceTest {
         assertNotNull(result);
     }
 
+    @Test
+    void test_getDoctorById_shouldReturnThrowException_whenNotFound() {
+        Long id = doctor.getId();
+
+        when(doctorRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(DoctorNotFoundException.class,()->{
+            doctorServiceimpl.findDoctorById(id);
+        });
+        verify(doctorMapper,never()).toDto(any());
+    }
+
 
     @Test
-    void test_delete_patient() {
+    void test_delete_Doctor() {
         Long id = doctor.getId();
         doNothing().when(doctorRepository).deleteById(id);
 

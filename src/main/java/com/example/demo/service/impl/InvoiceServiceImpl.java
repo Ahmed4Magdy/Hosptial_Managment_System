@@ -4,6 +4,7 @@ import com.example.demo.dto.InvoiceDto;
 import com.example.demo.dto.InvoiceItemDto;
 import com.example.demo.dto.InvoiceResponseDto;
 import com.example.demo.entity.*;
+import com.example.demo.exceptionhandler.AppointmentNotFoundException;
 import com.example.demo.exceptionhandler.DoctorNotFoundException;
 import com.example.demo.exceptionhandler.InvoiceNotFoundException;
 import com.example.demo.exceptionhandler.PatientNotFoundException;
@@ -12,6 +13,8 @@ import com.example.demo.mapper.InvoiceMapper;
 import com.example.demo.repository.*;
 import com.example.demo.service.InvoiceService;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,6 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class InvoiceServiceImpl implements InvoiceService {
 
     private final InvoiceRepository invoiceRepository;
@@ -38,15 +42,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final AppointmentRepository appointmentRepository;
 
 
-    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, InvoiceMapper invoiceMapper, InvoiceItemMapper invoiceItemMapper, InvoiceItemRepository invoiceItemRepository, DoctorRepository doctorRepository, PatientRepository patientRepository, AppointmentRepository appointmentRepository) {
-        this.invoiceRepository = invoiceRepository;
-        this.invoiceMapper = invoiceMapper;
-        this.invoiceItemMapper = invoiceItemMapper;
-        this.invoiceItemRepository = invoiceItemRepository;
-        this.doctorRepository = doctorRepository;
-        this.patientRepository = patientRepository;
-        this.appointmentRepository = appointmentRepository;
-    }
+
 
 
     // explaination for function
@@ -71,7 +67,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 
         Appointment appointment = appointmentRepository.findById(dto.getAppointmentId())
-                .orElseThrow(() -> new RuntimeException("Appointment not found"));
+                .orElseThrow(() -> new AppointmentNotFoundException("Appointment not found"));
         invoice.setAppointment(appointment);
 
 
@@ -83,11 +79,11 @@ public class InvoiceServiceImpl implements InvoiceService {
             InvoiceItem item = invoiceItemMapper.toEntity(itemDto);
 
             item.setInvoice(invoice);
-            item.setTotal(item.getPrice() * item.getQuantity());
+            item.setTotal(item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
             items.add(item);
 
 
-            totalAmount = totalAmount.add(BigDecimal.valueOf(item.getTotal()));
+            totalAmount = totalAmount.add(item.getTotal());
 
         }
 
@@ -100,10 +96,10 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
 
-    public void removeInvoice(Long invoice) {
+    public void removeInvoice(Long invoiceId) {
 
-        Invoice exisitng = invoiceRepository.findById(invoice).orElseThrow(() -> new InvoiceNotFoundException("Invoice Not Found"));
-        invoiceRepository.deleteById(invoice);
+        Invoice exisitng = invoiceRepository.findById(invoiceId).orElseThrow(() -> new InvoiceNotFoundException("Invoice Not Found"));
+        invoiceRepository.deleteById(invoiceId);
 
 
     }
@@ -155,9 +151,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         Invoice saved = invoiceRepository.save(invoice);
 
-        return invoiceMapper.toDto(invoice);
+        return invoiceMapper.toDto(saved);
 
     }
+
+
 
     @Override
     public InvoiceResponseDto getInvoiceById(Long id) {
