@@ -253,18 +253,17 @@ public class PaymentServiceTest {
     void getAllPayment_ShouldReturnAllPayments() {
 
         Payment payment1;
-        payment1 =new Payment();
+        payment1 = new Payment();
         payment1.setInvoice(invoice);
         payment1.setAmount(BigDecimal.valueOf(500));
         payment1.setMethod(Payment.PaymentMethod.CASH);
         payment1.setPaymentDate(LocalDateTime.now());
 
-        when(paymentRepository.findAll()).thenReturn(List.of(payment,payment1));
+        when(paymentRepository.findAll()).thenReturn(List.of(payment, payment1));
         when(paymentMapper.todto(payment)).thenReturn(dto);
 
         List<PaymentDto> result = paymentServiceimpl.getAllPayment();
         assertNotNull(result);
-//        assertEquals(dto,result);
         assertEquals(2, result.size());
     }
 
@@ -272,134 +271,3 @@ public class PaymentServiceTest {
 }
 
 
-//    @Test
-//    @DisplayName("Should throw InvoiceNotFoundException when invoice does not exist")
-//    void shouldThrowExceptionWhenInvoiceNotFound() {
-//        // Given
-//        when(invoiceRepository.findById(1L)).thenReturn(Optional.empty());
-//
-//        // When & Then
-//        InvoiceNotFoundException exception = assertThrows(
-//                InvoiceNotFoundException.class,
-//                () -> paymentServiceimpl.createPayment(dto)
-//        );
-//
-//        assertEquals("Not Found invoice with id 1", exception.getMessage());
-//
-//        // Verify
-//        verify(invoiceRepository, times(1)).findById(1L);
-//    }
-//
-//    @Test
-//    @DisplayName("Should throw IllegalStateException when invoice is already paid")
-//    void shouldThrowExceptionWhenInvoiceAlreadyPaid() {
-//
-//        invoice.setStatus(Invoice.Status.PAID);
-//        when(invoiceRepository.findById(invoice.getId())).thenReturn(Optional.of(invoice));
-//
-//        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-//            paymentServiceimpl.createPayment(dto);
-//        });
-//
-//        assertEquals("Invoice is not payable", exception.getMessage());
-//        verify(invoiceRepository, times(1)).findById(invoice.getId());
-//
-//    }
-//
-//    @Test
-//    @DisplayName("Should throw IllegalStateException when invoice is canceled")
-//    void shouldThrowExceptionWhenInvoiceCanceled() {
-//        // Given
-//        invoice.setStatus(Invoice.Status.CANCELED);
-//        when(invoiceRepository.findById(1L)).thenReturn(Optional.of(invoice));
-//
-//        // When & Then
-//        IllegalStateException exception = assertThrows(
-//                IllegalStateException.class,
-//                () -> paymentServiceimpl.createPayment(dto)
-//        );
-//
-//        assertEquals("Invoice is not payable", exception.getMessage());
-//
-//        // Verify
-//        verify(invoiceRepository, times(1)).findById(invoice.getId());
-//
-//    }
-//
-//    @Test
-//    @DisplayName("Should calculate change amount correctly")
-//    void shouldCalculateChangeAmountCorrectly() {
-//
-//        dto.setAmount(BigDecimal.valueOf(750));
-//
-//        when(invoiceRepository.findById(1L)).thenReturn(Optional.of(invoice));
-//        when(paymentMapper.toEntity(dto)).thenReturn(payment);
-//        when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
-//        when(paymentMapper.todto(payment)).thenReturn(dto);
-//
-//        PaymentDto result = paymentServiceimpl.createPayment(dto);
-//
-//        assertEquals(BigDecimal.valueOf(250), payment.getChangeAmount());
-//
-//
-//    }
-//
-//    @Test
-//    @DisplayName("Should create failed payment when amount is zero")
-//    void shouldCreateFailedPaymentWhenAmountIsZero() {
-//
-//        dto.setAmount(BigDecimal.ZERO);
-//        payment.setAmount(BigDecimal.ZERO);
-//        dto.setStatus(Payment.PaymentStatus.FAILED);
-//        payment.setStatus(Payment.PaymentStatus.FAILED);
-//        when(invoiceRepository.findById(1L)).thenReturn(Optional.of(invoice));
-//        when(paymentMapper.toEntity(dto)).thenReturn(payment);
-//        when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
-//        when(paymentMapper.todto(payment)).thenReturn(dto);
-//
-//        PaymentDto result = paymentServiceimpl.createPayment(dto);
-//
-//        assertEquals(Payment.PaymentStatus.FAILED, result.getStatus());
-//
-//    }
-//
-//
-//    @Test
-//    @DisplayName("Should return payment with InvoiceId")
-//    void ShouldReturnPaymentWithInvoiceId() {
-//
-//        when(paymentRepository.findByInvoiceId(1L)).thenReturn((payment));
-//        when(paymentMapper.todto(payment)).thenReturn(dto);
-//
-//        PaymentDto result = paymentServiceimpl.getPaymentByInvoiceId(1L);
-//        verify(paymentRepository, times(1)).findByInvoiceId(1L);
-//
-//    }
-//
-//    @Test
-//    @DisplayName("Should Update payment")
-//    void ShouldUpdatePayment() {
-//
-//        invoice2 = new Invoice();
-//        invoice2.setId(2L);
-//        invoice2.setPatient(patient);
-//        invoice2.setDoctor(doctor);
-//        invoice2.setDoctorName("shams");
-//        invoice2.setPatientName("arwa");
-//        invoice2.setStatus(Invoice.Status.PENDING);
-//        invoice2.setTotalAmount(BigDecimal.valueOf(800));
-//        Invoice savedinvoice = invoiceRepository.save(invoice);
-//
-//        when(paymentRepository.findById(1L)).thenReturn(Optional.of(payment));
-//        when(invoiceRepository.findById(1L)).thenReturn(Optional.of(invoice));
-//
-//        payment.setInvoice(invoice2);
-//        doNothing().when(paymentMapper).updatePaymentFromDto(dto,payment);
-//        when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
-//        when(paymentMapper.todto(payment)).thenReturn(dto);
-//
-//
-//        PaymentDto result = paymentServiceimpl.updatePayment(1L, dto);
-//        assertEquals(Optional.of(2),invoice2.getId());
-//
-//    }
